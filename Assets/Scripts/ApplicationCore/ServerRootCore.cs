@@ -28,6 +28,7 @@ namespace ApplicationCore
 
         private void AddControlSystems()
         {
+            systems.Add(new MoveToTargetSystem());
             systems.Add(new TriggerEnterExitDetectionSystem());
             systems.Add(new DoorButtonPressingSystem());
             systems.Add(new MovementSystem());

@@ -6,11 +6,11 @@ namespace GameEntities
     public class DoorButtonView : MonoBehaviour
     {
         [SerializeField] private int buttonId;
-        [SerializeField] private Transform buttonTransform;
+        [SerializeField] private SphereCollider sphereCollider;
         [SerializeField] private Transform doorTransform;
 
         public int ButtonId => buttonId;
-        public Transform ButtonTransform => buttonTransform;
+        public SphereCollider SphereCollider => sphereCollider;
         public Transform DoorTransform => doorTransform;
     }
 }

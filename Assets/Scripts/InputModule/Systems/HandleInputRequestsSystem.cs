@@ -13,12 +13,11 @@ namespace InputModule
         {
             world = systems.GetWorld();
             inputWorld = systems.GetWorld("Input");
-            
-            inputEntityFilter = inputWorld.Filter<InputComponent>().End();
         }
         
         public void Run(IEcsSystems systems)
         {
+            inputEntityFilter = inputWorld.Filter<InputComponent>().End();
             var inputEntityIdPool = inputWorld.GetPool<InputEntityIdComponent>();
             
             var newTargetRequestPool = inputWorld.GetPool<InputTargetRequest>();
@@ -27,23 +26,37 @@ namespace InputModule
             foreach (int i in inputEntityFilter)
             {
                 if (newTargetRequestPool.Has(i))
-                    SetTarget(inputEntityIdPool.Get(i).entity);
+                    SetTarget(inputEntityIdPool.Get(i).entity, newTargetRequestPool.Get(i).target);
                 
                 if (moveDirectionRequestPool.Has(i))
                     SetMoveDirection(inputEntityIdPool.Get(i).entity, moveDirectionRequestPool.Get(i).MoveDirection);
             }
         }
 
-        private void SetTarget(int inputEntity)
+        private void SetTarget(int playerId, Vector3 targetPosition)
         {
-            
+            var targetPool = world.GetPool<MoveToTargetComponent>();
+
+            if (targetPool.Has(playerId))
+            {
+                Vector3 oldTarget = targetPool.Get(playerId).target;
+                if ((oldTarget - targetPosition).sqrMagnitude > 0.1f)
+                {
+                    ref var moveToTargetComponent = ref targetPool.Get(playerId);
+                    moveToTargetComponent.target = targetPosition;
+                }
+            }
+            else
+            {
+                targetPool.Add(playerId).target = targetPosition;
+            }
         }
         
         private void SetMoveDirection(int playerId, Vector3 dir)
         {
             if (dir.sqrMagnitude > 0.1f)
             {
-                inputWorld.GetPool<MoveToTargetComponent>().Del(playerId);
+                world.GetPool<MoveToTargetComponent>().Del(playerId);
                 var pool = world.GetPool<MovingEntityComponent>();
                 if (!pool.Has(playerId))
                     pool.Add(playerId).direction = dir;
