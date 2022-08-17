@@ -10,7 +10,6 @@ namespace ApplicationCore
         private EcsSystems systems;
         
         private EcsSystems viewSystems;
-
         private SceneManagerService sceneManagerService;
         
         public ClientRootCore(EcsWorld world, EcsSystems systems, WorldView worldView)
@@ -25,8 +24,8 @@ namespace ApplicationCore
 
             sceneManagerService = new SceneManagerService(world, worldView);
 
-            AddInputSystems();
             AddViewSystems();
+            AddInputSystems();
         }
         
         private void AddInputSystems()

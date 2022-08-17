@@ -5,7 +5,7 @@ namespace ApplicationCore
 {
     public class ServerRootCore
     {
-        private EcsWorld world, inputWorld;
+        private EcsWorld world;
         private EcsSystems systems;
 
         public ServerRootCore(EcsWorld world, EcsSystems systems)
@@ -28,8 +28,10 @@ namespace ApplicationCore
 
         private void AddControlSystems()
         {
+            systems.Add(new TriggerEnterExitDetectionSystem());
+            systems.Add(new DoorButtonPressingSystem());
             systems.Add(new MovementSystem());
-            systems.Add(new GameProcessDebugSystem());
+            systems.Add(new GameProcessDebugSystem(true, false));
         }
 
         public void RunLogic()

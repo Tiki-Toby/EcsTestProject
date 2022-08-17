@@ -62,14 +62,16 @@ namespace ApplicationCore
                 doorComponent.doorId = doorViews[i].DoorId;
                 doorComponent.moveDirecition = doorViews[i].OffsetFromStartPosition.normalized;
                 doorComponent.finalPosition = doorViews[i].DoorTransform.position + doorViews[i].OffsetFromStartPosition;
-
-                int buttonId = _entityFactory.CreateGameObject(doorButtonViews[i].ButtonTransform.name);
-                _world.GetPool<TransformComponent>().Add(buttonId).objectTransform = 
-                    doorButtonViews[i].ButtonTransform;
-                _world.GetPool<PositionComponent>().Get(buttonId).currentEntityPosition = 
-                    doorButtonViews[i].ButtonTransform.position;
                 
-                ref var buttonComponent = ref _world.GetPool<DoorButtonComponent>().Add(buttonId);
+                int buttonEntity = _entityFactory.CreateGameObject(doorButtonViews[i].SphereCollider.name);
+                _world.GetPool<TransformComponent>().Add(buttonEntity).objectTransform = 
+                    doorButtonViews[i].SphereCollider.transform;
+                _world.GetPool<PositionComponent>().Get(buttonEntity).currentEntityPosition = 
+                    doorButtonViews[i].SphereCollider.transform.position;
+                _world.GetPool<InteractableRadiusComponent>().Add(buttonEntity).interactableRadius =
+                    doorButtonViews[i].SphereCollider.radius;
+                
+                ref var buttonComponent = ref _world.GetPool<DoorButtonComponent>().Add(buttonEntity);
                 buttonComponent.buttonId = doorButtonViews[i].ButtonId;
                 buttonComponent.doorEntity = doorEntity;
             }
