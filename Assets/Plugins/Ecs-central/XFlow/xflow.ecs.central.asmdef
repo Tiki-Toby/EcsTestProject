@@ -1,0 +1,17 @@
+{
+    "name": "xflow.ecs.central",
+    "rootNamespace": "",
+    "references": [
+        "GUID:3a0fb5b4b1f09a845a3ce52173a975f5",
+        "GUID:0d8beb7f090555447a6cf5ce9e54dbb4"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

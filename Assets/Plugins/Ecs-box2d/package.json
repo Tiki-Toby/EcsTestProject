@@ -1,0 +1,6 @@
+{ 
+  "name": "com.xflow.ecs.box2d",  
+  "version": "0.0.1",
+  "displayName": "com.xflow.ecs.box2d",
+  "type": "library"
+}
