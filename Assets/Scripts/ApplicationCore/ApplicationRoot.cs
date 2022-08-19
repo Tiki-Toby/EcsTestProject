@@ -1,7 +1,9 @@
 using GameConfigs;
 using GameEntities;
-using Leopotam.EcsLite;
 using UnityEngine;
+using XFlow.EcsLite;
+using XFlow.Modules.Tick.ClientServer.Components;
+using XFlow.Modules.Tick.Other;
 using Zenject;
 
 namespace ApplicationCore
@@ -21,6 +23,14 @@ namespace ApplicationCore
         {
             world = new EcsWorld();
             systems = new EcsSystems(world);
+            
+            world.AddUnique(new TickDeltaComponent
+            {
+                Value = new TickDelta((int)(1f/Time.fixedDeltaTime))
+            });
+
+            world.AddUnique(new TickComponent{Value = new Tick(0)});
+
 
             serverRootCore = new ServerRootCore(world, systems);
             clientRootCore = new ClientRootCore(world, systems, worldView, gameConfigs);
@@ -37,8 +47,8 @@ namespace ApplicationCore
 
         private void OnDestroy()
         {
-            clientRootCore.Destroy();
             serverRootCore.Destroy();
+            clientRootCore.Destroy();
         }
     }
 }

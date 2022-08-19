@@ -1,7 +1,6 @@
 using GameEntities;
-using Leopotam.EcsLite;
 using UnityEngine;
-using Utils;
+using XFlow.EcsLite;
 
 namespace InputModule
 {
@@ -14,13 +13,13 @@ namespace InputModule
         protected abstract Vector3 GetTouchedPoint();
         protected abstract Vector3 GetInputMoveDirection();
 
-        public virtual void Init(IEcsSystems systems)
+        public virtual void Init(EcsSystems systems)
         {
             world = systems.GetWorld();
             inputWorld = systems.GetWorld("Input");
         }
 
-        public void Run(IEcsSystems systems)
+        public void Run(EcsSystems systems)
         {
             ClearOldInputEntities();
             int playerId = world.GetUnique<MainPlayerTag>().playerId;

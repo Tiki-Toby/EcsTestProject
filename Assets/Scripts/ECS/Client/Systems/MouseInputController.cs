@@ -1,7 +1,6 @@
 using GameEntities;
-using Leopotam.EcsLite;
 using UnityEngine;
-using Utils;
+using XFlow.EcsLite;
 
 namespace InputModule
 {
@@ -10,12 +9,13 @@ namespace InputModule
         private Camera camera;
         private RaycastHit hit;
 
-        public override void Init(IEcsSystems systems)
+        public override void Init(EcsSystems systems)
         {   
             base.Init(systems);
-            var cameraPool = world.GetPool<CameraComponent>();
-
-            camera = cameraPool.GetRawDenseItems()[0].Camera;
+            
+            var cameraEntity = world.GetUnique<MainCameraComponent>().cameraEntity;
+            camera = world.GetPool<CameraComponent>().GetRef(cameraEntity).Camera;
+            
             if (camera == null)
             {
                 Debug.LogError("Camera didn't initialize in component pool");

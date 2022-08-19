@@ -1,11 +1,11 @@
-using Leopotam.EcsLite;
 using UnityEngine;
+using XFlow.EcsLite;
 
 namespace GameEntities
 {
     public class MoveToTargetSystem : IEcsRunSystem
     {
-        public void Run(IEcsSystems systems)
+        public void Run(EcsSystems systems)
         {
             EcsWorld world = systems.GetWorld();
             EcsFilter filter = world
@@ -34,7 +34,7 @@ namespace GameEntities
                 Vector3 moveDirection = deltaPosition.normalized;
 
                 if (movingPool.Has(i))
-                    movingPool.Get(i).direction = moveDirection;
+                    movingPool.GetRef(i).direction = moveDirection;
                 else
                     movingPool.Add(i).direction = moveDirection;
             }

@@ -1,9 +1,7 @@
-using System.Runtime.InteropServices;
 using GameConfigs;
 using GameEntities;
 using InputModule;
-using Leopotam.EcsLite;
-using Zenject;
+using XFlow.EcsLite;
 
 namespace ApplicationCore
 {

@@ -1,11 +1,11 @@
-using Leopotam.EcsLite;
 using UnityEngine;
+using XFlow.EcsLite;
 
 namespace GameEntities
 {
     internal class MovementSystem : IEcsRunSystem
     {
-        public void Run(IEcsSystems systems)
+        public void Run(EcsSystems systems)
         {
             EcsWorld world = systems.GetWorld();
             EcsFilter filter = world
@@ -24,17 +24,19 @@ namespace GameEntities
                 float speed = velocityPool.Get(entity).velocity;
                 Vector3 dir = moveDirection * Time.deltaTime * speed;
                 
-                ref var positionComponent = ref positionPool.Get(entity);
+                ref var positionComponent = ref positionPool.GetRef(entity);
                 positionComponent.currentEntityPosition += dir;
 
                 if (rotationPool.Has(entity))
                 {
-                    Vector3 axis = new Vector3(dir.z, 0, -dir.x);
-                    //Quaternion.FromToRotation(positionComponent.currentEntityPosition, dir)
-                    Quaternion rotation = Quaternion.AngleAxis(1, axis);
+                    ref var rotationComponent = ref rotationPool.GetRef(entity);
                     
-                    ref var rotationComponent = ref rotationPool.Get(entity);
-                    rotationComponent.rotation *= rotation;
+                    //Vector3 axis = Vector3.Cross(moveDirection.normalized, Vector3.up);
+                    Vector3 axis = new Vector3(dir.z, 0, -dir.x);
+                    float angel = 1;//dir.magnitude * Mathf.PI;
+                    Quaternion rotation = Quaternion.AngleAxis(angel, axis);
+                    
+                    rotationComponent.rotation = rotation * rotationComponent.rotation;
                 }
             }
         }

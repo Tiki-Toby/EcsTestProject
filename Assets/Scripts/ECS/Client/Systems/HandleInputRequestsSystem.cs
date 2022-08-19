@@ -1,6 +1,6 @@
 using GameEntities;
-using Leopotam.EcsLite;
 using UnityEngine;
+using XFlow.EcsLite;
 
 namespace InputModule
 {
@@ -9,13 +9,13 @@ namespace InputModule
         private EcsWorld inputWorld, world;
         private EcsFilter inputEntityFilter;
         
-        public void Init(IEcsSystems systems)
+        public void Init(EcsSystems systems)
         {
             world = systems.GetWorld();
             inputWorld = systems.GetWorld("Input");
         }
         
-        public void Run(IEcsSystems systems)
+        public void Run(EcsSystems systems)
         {
             inputEntityFilter = inputWorld.Filter<InputEntityTag>().End();
             var inputEntityIdPool = inputWorld.GetPool<InputEntityIdComponent>();
@@ -42,7 +42,7 @@ namespace InputModule
                 Vector3 oldTarget = targetPool.Get(playerId).target;
                 if ((oldTarget - targetPosition).sqrMagnitude > 0.1f)
                 {
-                    ref var moveToTargetComponent = ref targetPool.Get(playerId);
+                    ref var moveToTargetComponent = ref targetPool.GetRef(playerId);
                     moveToTargetComponent.target = targetPosition;
                 }
             }
@@ -61,7 +61,7 @@ namespace InputModule
                 if (!pool.Has(playerId))
                     pool.Add(playerId).direction = dir;
                 else
-                    pool.Get(playerId).direction = dir;
+                    pool.GetRef(playerId).direction = dir;
             }
             else
             {

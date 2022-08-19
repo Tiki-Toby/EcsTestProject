@@ -1,6 +1,5 @@
-using Leopotam.EcsLite;
 using UnityEngine;
-using Utils;
+using XFlow.EcsLite;
 
 namespace GameEntities
 {

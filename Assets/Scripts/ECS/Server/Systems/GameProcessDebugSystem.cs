@@ -1,5 +1,9 @@
 using Leopotam.EcsLite;
 using UnityEngine;
+using EcsFilter = XFlow.EcsLite.EcsFilter;
+using EcsSystems = XFlow.EcsLite.EcsSystems;
+using EcsWorld = XFlow.EcsLite.EcsWorld;
+using IEcsRunSystem = XFlow.EcsLite.IEcsRunSystem;
 
 namespace GameEntities
 {
@@ -13,7 +17,7 @@ namespace GameEntities
             this.debugTriggers = debugTriggers;
         }
         
-        public void Run(IEcsSystems systems)
+        public void Run(EcsSystems systems)
         {
             EcsWorld world = systems.GetWorld();
 
@@ -42,7 +46,7 @@ namespace GameEntities
                 float speed = velocityPool.Get(entity).velocity;
                 Vector3 dir = moveDirection * Time.deltaTime * speed;
                 
-                ref var positionComponent = ref positionPool.Get(entity);
+                ref var positionComponent = ref positionPool.GetRef(entity);
                 
                 if(rotationPool.Has(entity))
                     Debug.Log("Rotation: " + rotationPool.Get(entity).rotation.ToString());
@@ -62,7 +66,7 @@ namespace GameEntities
             var buttonPool = world.GetPool<DoorButtonComponent>();
             foreach (var button in filter)
             {
-                ref var buttonComponent = ref buttonPool.Get(button);
+                ref var buttonComponent = ref buttonPool.GetRef(button);
                 Debug.Log($"Triggered button with id {buttonComponent.buttonId}");
             }
         }

@@ -1,11 +1,11 @@
-using Leopotam.EcsLite;
 using UnityEngine;
+using XFlow.EcsLite;
 
 namespace GameEntities
 {
     public class DoorButtonPressingSystem : IEcsRunSystem
     {
-        public void Run(IEcsSystems systems)
+        public void Run(EcsSystems systems)
         {
             EcsWorld world = systems.GetWorld();
 
@@ -26,7 +26,7 @@ namespace GameEntities
             foreach (int i in filter)
             {
                 int doorEntity = buttonPool.Get(i).doorEntity;
-                ref var doorComponent = ref doorPool.Get(doorEntity);
+                ref var doorComponent = ref doorPool.GetRef(doorEntity);
 
                 if (triggerExitPool.Has(i))
                 {
@@ -45,7 +45,7 @@ namespace GameEntities
                     if (!movingPool.Has(doorEntity))
                         movingPool.Add(doorEntity).direction = doorComponent.moveDirecition;
                     else
-                        movingPool.Get(doorEntity).direction = doorComponent.moveDirecition;
+                        movingPool.GetRef(doorEntity).direction = doorComponent.moveDirecition;
                 }
                 else if (movingPool.Has(doorEntity))
                         movingPool.Del(doorEntity);

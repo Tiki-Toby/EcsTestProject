@@ -1,11 +1,11 @@
-using Leopotam.EcsLite;
 using UnityEngine;
+using XFlow.EcsLite;
 
 namespace GameEntities
 {
     public class SyncTransformDataSystem : IEcsRunSystem
     {
-        public void Run(IEcsSystems systems)
+        public void Run(EcsSystems systems)
         {
             EcsWorld world = systems.GetWorld();
             EcsFilter filter = world

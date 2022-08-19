@@ -1,12 +1,11 @@
-using Leopotam.EcsLite;
 using UnityEngine;
-using Utils;
+using XFlow.EcsLite;
 
 namespace GameEntities
 {
     public class TriggerEnterExitDetectionSystem : IEcsRunSystem
     {
-        public void Run(IEcsSystems systems)
+        public void Run(EcsSystems systems)
         {
             EcsWorld world = systems.GetWorld();
             EcsFilter filter = world
@@ -22,12 +21,12 @@ namespace GameEntities
             var triggeredExitPool = world.GetPool<TriggerExitTag>();
 
             Vector3 playerPosition = 
-                positionPool.Get(world.GetUnique<MainPlayerTag>().playerId).currentEntityPosition;
+                positionPool.GetRef(world.GetUnique<MainPlayerTag>().playerId).currentEntityPosition;
             
             foreach (int buttonEntity in filter)
             {
-                Vector3 buttonPosition = positionPool.Get(buttonEntity).currentEntityPosition;
-                float buttonRadius = interactableRadiusPool.Get(buttonEntity).interactableRadius;
+                Vector3 buttonPosition = positionPool.GetRef(buttonEntity).currentEntityPosition;
+                float buttonRadius = interactableRadiusPool.GetRef(buttonEntity).interactableRadius;
 
                 if ((playerPosition - buttonPosition).sqrMagnitude <= buttonRadius)
                 {
