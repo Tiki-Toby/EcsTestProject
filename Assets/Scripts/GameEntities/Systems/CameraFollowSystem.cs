@@ -1,6 +1,7 @@
 using Leopotam.EcsLite;
 using UnityEngine;
 using Utils;
+using Zenject;
 
 namespace GameEntities
 {

@@ -1,79 +1,134 @@
+using System.Collections.Generic;
+using System.Linq;
+using GameConfigs;
 using GameEntities;
 using Leopotam.EcsLite;
+using UnityEngine;
+using DoorButtonPair = GameConfigs.DoorButtonPair;
 
 namespace ApplicationCore
 {
     public class SceneManagerService
     {
-        private EcsWorld _world;
-        private EntityFactory _entityFactory;
-
-        public SceneManagerService(EcsWorld world, WorldView worldView)
+        private readonly WorldView worldView;
+        private readonly GameConfigsReceiver gameConfigs;
+        
+        private readonly Dictionary<GameObject, int> createdEntities;
+        
+        private readonly EcsWorld world;
+        private readonly EntityFactory entityFactory;
+        
+        public SceneManagerService(EcsWorld world, WorldView worldView, GameConfigsReceiver gameConfigs)
         {
-            _world = world;
-            _entityFactory = new EntityFactory(_world);
+            this.world = world;
+            entityFactory = new EntityFactory(this.world);
 
-            CreateCameraEntity(worldView.CameraView);
-            CreatePlayerEntity(worldView.PlayerView);
-            CreateDoorEntities(worldView.DoorButtonViews, worldView.DoorViews);
+            createdEntities = new Dictionary<GameObject, int>();
+            
+            this.worldView = worldView;
+            this.gameConfigs = gameConfigs;
         }
 
-        private void CreateCameraEntity(CameraView cameraView)
+        public void CreateEntitiesForLevel(int index)
         {
-            int cameraId = _entityFactory.CreateEmpty("Camera");
-            _world.GetPool<TransformComponent>().Add(cameraId).objectTransform = cameraView.Camera.transform;
+            CreateCameraEntity(worldView.Camera,
+                gameConfigs.CameraDataConfig.CameraVelocity,
+                gameConfigs.CameraDataConfig.FromPlayerOffset);
+
+            CreatePlayerEntity(worldView.PlayerTransformPrefab,
+                gameConfigs.GetSceneDataConfigByIndex(index).GetRandomPlayerSpawnPoint(),
+                gameConfigs.PlayerDataConfig.Velocity);
+
+            foreach (DoorButtonPair doorButtonPair in gameConfigs.GetSceneDataConfigByIndex(index).DoorButtonPairs)
+            {
+                DoorView doorView = worldView.DoorViews.First(view => view.DoorId == doorButtonPair.DoorId);
+                DoorButtonView doorButtonView = worldView.DoorButtonViews.First(view => view.ButtonId == doorButtonPair.ButtonId);
+                CreateDoorEntity(doorButtonView, doorView, doorButtonPair.Velocity, doorButtonPair.OffsetFromStartPosition);
+            }
+        }
+
+        private void CreateCameraEntity(Camera camera, 
+            float velocity, Vector3 offsetFromPlayer)
+        {
+            int cameraId = entityFactory.CreateEmpty("Camera");
+            world.GetPool<TransformComponent>().Add(cameraId).objectTransform = camera.transform;
             
-            ref var cameraComponent = ref _world.GetPool<CameraComponent>().Add(cameraId);
-            cameraComponent.Camera = cameraView.Camera;
+            ref var cameraComponent = ref world.GetPool<CameraComponent>().Add(cameraId);
+            cameraComponent.Camera = camera;
             
-            ref var actionCameraDataComponent = ref _world.GetPool<ActionCameraComponent>().Add(cameraId);
-            actionCameraDataComponent.FromPlayerOffset = cameraView.FromPlayerOffset;
-            actionCameraDataComponent.CameraVelocity = cameraView.CameraVelocity;
+            ref var actionCameraDataComponent = ref world.GetPool<ActionCameraComponent>().Add(cameraId);
+            actionCameraDataComponent.FromPlayerOffset = offsetFromPlayer;
+            actionCameraDataComponent.CameraVelocity = velocity;
+            
+            createdEntities.Add(cameraComponent.Camera.gameObject, cameraId);
         }
         
-        private void CreatePlayerEntity(PlayerView playerView)
+        private void CreatePlayerEntity(Transform playerTransformPrefab, Vector3 spawnPoint, float velocity)
         {
-            int playerId = _entityFactory.CreatePlayerEntity(playerView.PlayerName, playerView.Velocity);
-
-            _world.GetPool<TransformComponent>().Add(playerId).objectTransform = 
-                playerView.PlayerTransform;
-
-            _world.GetPool<PositionComponent>().Get(playerId).currentEntityPosition = 
-                playerView.PlayerTransform.position;
+            Transform playerTransform = Object.Instantiate(playerTransformPrefab, spawnPoint, Quaternion.identity);
             
-            _world.GetPool<RotationComponent>().Get(playerId).rotation =
-                playerView.PlayerTransform.rotation;
+            int playerId = entityFactory.CreatePlayerEntity("Player", velocity);
+
+            world.GetPool<TransformComponent>().Add(playerId).objectTransform = playerTransform;
+            world.GetPool<PositionComponent>().Get(playerId).currentEntityPosition = playerTransform.position;
+            world.GetPool<RotationComponent>().Get(playerId).rotation = playerTransform.rotation;
+            
+            createdEntities.Add(playerTransform.gameObject, playerId);
         }
 
-        private void CreateDoorEntities(DoorButtonView[] doorButtonViews, DoorView[] doorViews)
+        private void CreateDoorEntity(Transform doorTransform,
+            int doorId,
+            float velocity, Vector3 offsetFromStartPosition)
         {
-            for(int i = 0; i < doorButtonViews.Length; i++)
+            if (!createdEntities.TryGetValue(doorTransform.gameObject, out int doorEntity))
             {
-                int doorEntity = _entityFactory.CreateMovableGameObject(doorViews[i].DoorTransform.name, 
-                    doorViews[i].Velocity);
-                _world.GetPool<TransformComponent>().Add(doorEntity).objectTransform = 
-                    doorViews[i].DoorTransform;
-                _world.GetPool<PositionComponent>().Get(doorEntity).currentEntityPosition = 
-                    doorViews[i].DoorTransform.position;
-                _world.GetPool<VelocityComponent>().Get(doorEntity).velocity = 
-                    doorViews[i].Velocity;
-                
-                ref var doorComponent = ref _world.GetPool<DoorComponent>().Add(doorEntity);
-                doorComponent.doorId = doorViews[i].DoorId;
-                doorComponent.moveDirecition = doorViews[i].OffsetFromStartPosition.normalized;
-                doorComponent.finalPosition = doorViews[i].DoorTransform.position + doorViews[i].OffsetFromStartPosition;
-                
-                int buttonEntity = _entityFactory.CreateGameObject(doorButtonViews[i].SphereCollider.name);
-                _world.GetPool<TransformComponent>().Add(buttonEntity).objectTransform = 
-                    doorButtonViews[i].SphereCollider.transform;
-                _world.GetPool<PositionComponent>().Get(buttonEntity).currentEntityPosition = 
-                    doorButtonViews[i].SphereCollider.transform.position;
-                _world.GetPool<InteractableRadiusComponent>().Add(buttonEntity).interactableRadius =
-                    doorButtonViews[i].SphereCollider.radius;
-                
-                ref var buttonComponent = ref _world.GetPool<DoorButtonComponent>().Add(buttonEntity);
-                buttonComponent.buttonId = doorButtonViews[i].ButtonId;
+                doorEntity = entityFactory.CreateMovableGameObject(doorTransform.name, velocity);
+                world.GetPool<TransformComponent>().Add(doorEntity).objectTransform = doorTransform;
+                world.GetPool<PositionComponent>().Get(doorEntity).currentEntityPosition = doorTransform.position;
+
+                ref var doorComponent = ref world.GetPool<DoorComponent>().Add(doorEntity);
+                doorComponent.doorId = doorId;
+                doorComponent.moveDirecition = offsetFromStartPosition.normalized;
+                doorComponent.finalPosition = doorTransform.position + offsetFromStartPosition;
+
+                createdEntities.Add(doorTransform.gameObject, doorEntity);
+            }
+        }
+
+        private void CreateDoorEntity(DoorButtonView doorButtonView, DoorView doorView, 
+            float velocity, Vector3 offsetFromStartPosition)
+        {
+            if (!createdEntities.TryGetValue(doorView.gameObject, out int doorEntity))
+            {
+                doorEntity = entityFactory.CreateMovableGameObject(doorView.gameObject.name, velocity);
+                Transform doorTransform = doorView.DoorTransform;
+                world.GetPool<TransformComponent>().Add(doorEntity).objectTransform = doorTransform;
+                world.GetPool<PositionComponent>().Get(doorEntity).currentEntityPosition = doorTransform.position;
+                world.GetPool<VelocityComponent>().Get(doorEntity).velocity = velocity;
+
+                ref var doorComponent = ref world.GetPool<DoorComponent>().Add(doorEntity);
+                doorComponent.doorId = doorView.DoorId;
+                doorComponent.moveDirecition = offsetFromStartPosition.normalized;
+                doorComponent.finalPosition = doorTransform.position + offsetFromStartPosition;
+
+                createdEntities.Add(doorView.gameObject, doorEntity);
+            }
+
+            if (!createdEntities.TryGetValue(doorButtonView.gameObject, out int buttonEntity))
+            {
+                buttonEntity = entityFactory.CreateGameObject(doorButtonView.SphereCollider.name);
+                world.GetPool<TransformComponent>().Add(buttonEntity).objectTransform =
+                    doorButtonView.SphereCollider.transform;
+                world.GetPool<PositionComponent>().Get(buttonEntity).currentEntityPosition =
+                    doorButtonView.SphereCollider.transform.position;
+                world.GetPool<InteractableRadiusComponent>().Add(buttonEntity).interactableRadius =
+                    doorButtonView.SphereCollider.radius;
+
+                ref var buttonComponent = ref world.GetPool<DoorButtonComponent>().Add(buttonEntity);
+                buttonComponent.buttonId = doorButtonView.ButtonId;
                 buttonComponent.doorEntity = doorEntity;
+                
+                createdEntities.Add(doorButtonView.gameObject, doorEntity);
             }
         }
     }

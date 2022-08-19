@@ -1,20 +1,23 @@
+using System.Runtime.InteropServices;
+using GameConfigs;
 using GameEntities;
 using InputModule;
 using Leopotam.EcsLite;
+using Zenject;
 
 namespace ApplicationCore
 {
     public class ClientRootCore
     {
-        private EcsWorld world, inputWorld;
+        private EcsWorld inputWorld;
         private EcsSystems systems;
         
         private EcsSystems viewSystems;
         private SceneManagerService sceneManagerService;
         
-        public ClientRootCore(EcsWorld world, EcsSystems systems, WorldView worldView)
+        public ClientRootCore(EcsWorld world, EcsSystems systems, 
+            WorldView worldView, GameConfigsReceiver gameConfigs)
         {
-            this.world = world;
             this.systems = systems;
 
             inputWorld = new EcsWorld();
@@ -22,10 +25,11 @@ namespace ApplicationCore
 
             viewSystems = new EcsSystems(world);
 
-            sceneManagerService = new SceneManagerService(world, worldView);
+            sceneManagerService = new SceneManagerService(world, worldView, gameConfigs);
+            sceneManagerService.CreateEntitiesForLevel(0);
 
-            AddViewSystems();
             AddInputSystems();
+            AddViewSystems();
         }
         
         private void AddInputSystems()

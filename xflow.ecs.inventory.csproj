@@ -41,12 +41,12 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Plugins\Ecs-central\XFlow\Modules\Inventory\ClientServer\Components\ItemIdComponent.cs" />
      <Compile Include="Assets\Plugins\Ecs-central\XFlow\Modules\Inventory\ClientServer\Components\AmountComponent.cs" />
-     <Compile Include="Assets\Plugins\Ecs-central\XFlow\Modules\Inventory\ClientServer\Components\InventorySlotComponent.cs" />
-     <Compile Include="Assets\Plugins\Ecs-central\XFlow\Modules\Inventory\ClientServer\InventoryService.cs" />
      <Compile Include="Assets\Plugins\Ecs-central\XFlow\Modules\Inventory\ClientServer\Components\InventoryComponent.cs" />
      <Compile Include="Assets\Plugins\Ecs-central\XFlow\Modules\Inventory\ClientServer\IInventoryService.cs" />
+     <Compile Include="Assets\Plugins\Ecs-central\XFlow\Modules\Inventory\ClientServer\Components\ItemIdComponent.cs" />
+     <Compile Include="Assets\Plugins\Ecs-central\XFlow\Modules\Inventory\ClientServer\Components\InventorySlotComponent.cs" />
+     <Compile Include="Assets\Plugins\Ecs-central\XFlow\Modules\Inventory\ClientServer\InventoryService.cs" />
      <None Include="Assets\Plugins\Ecs-central\XFlow\Modules\Inventory\xflow.ecs.inventory.asmdef" />
      <Reference Include="UnityEngine">
      <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.8f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>

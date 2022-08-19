@@ -1,27 +1,44 @@
+using GameConfigs;
 using GameEntities;
+using Leopotam.EcsLite;
 using UnityEngine;
+using Zenject;
 
 namespace ApplicationCore
 {
     public class ApplicationRoot : MonoBehaviour
     {
-        [SerializeField] private WorldView worldView;
+        [Inject] private WorldView worldView;
+        [Inject] private GameConfigsReceiver gameConfigs;
         
-        private GameCore gameCore;
+        private EcsWorld world;
+        private EcsSystems systems;
 
-        private void Awake()
+        private ClientRootCore clientRootCore;
+        private ServerRootCore serverRootCore;
+
+        private void Start()
         {
-            gameCore = new GameCore(worldView);
+            world = new EcsWorld();
+            systems = new EcsSystems(world);
+
+            serverRootCore = new ServerRootCore(world, systems);
+            clientRootCore = new ClientRootCore(world, systems, worldView, gameConfigs);
+            
+            serverRootCore.Init();
+            clientRootCore.Init();
         }
 
         private void Update()
         {
-            gameCore.Run();
+            serverRootCore.RunLogic();
+            clientRootCore.RunView();
         }
 
         private void OnDestroy()
         {
-            gameCore.Destroy();
+            clientRootCore.Destroy();
+            serverRootCore.Destroy();
         }
     }
 }

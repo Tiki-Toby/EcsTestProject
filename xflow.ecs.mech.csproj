@@ -42,11 +42,11 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets\Plugins\Ecs-central\XFlow\Modules\Mech\ClientServer\Components\MechComponent.cs" />
+     <Compile Include="Assets\Plugins\Ecs-central\XFlow\Modules\Mech\Client\Components\MechAnimatorComponent.cs" />
      <Compile Include="Assets\Plugins\Ecs-central\XFlow\Modules\Mech\Client\Systems\MechAnimationSystem.cs" />
      <Compile Include="Assets\Plugins\Ecs-central\XFlow\Modules\Mech\ClientServer\MechService.cs" />
      <Compile Include="Assets\Plugins\Ecs-central\XFlow\Modules\Mech\Client\ClientMechServices.cs" />
      <Compile Include="Assets\Plugins\Ecs-central\XFlow\Modules\Mech\ClientServer\Components\MechMovingComponent.cs" />
-     <Compile Include="Assets\Plugins\Ecs-central\XFlow\Modules\Mech\Client\Components\MechAnimatorComponent.cs" />
      <Compile Include="Assets\Plugins\Ecs-central\XFlow\Modules\Mech\Client\Systems\CreateMechViewSystem.cs" />
      <None Include="Assets\Plugins\Ecs-central\XFlow\Modules\Mech\xflow.ecs.mech.asmdef" />
      <Reference Include="UnityEngine">

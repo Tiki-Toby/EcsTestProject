@@ -1,6 +1,6 @@
 namespace InputModule
 {
-    public struct InputComponent
+    public struct InputEntityTag
     {
     }
 }

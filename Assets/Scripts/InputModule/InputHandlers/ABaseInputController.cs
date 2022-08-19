@@ -36,7 +36,7 @@ namespace InputModule
             Vector3 inputMoveDirection = GetInputMoveDirection();
             if (inputMoveDirection.sqrMagnitude > 0f)
             {
-                var newDirectionInputRequest = new InputDirectionRequest();
+                var newDirectionInputRequest = new InputDirectionComponent();
                 newDirectionInputRequest.MoveDirection = inputMoveDirection;
                 CreateInputEntity(playerId, newDirectionInputRequest);
             }
@@ -44,7 +44,7 @@ namespace InputModule
 
         private void ClearOldInputEntities()
         {
-            EcsFilter filter = world.Filter<InputComponent>().End();
+            EcsFilter filter = world.Filter<InputEntityTag>().End();
 
             foreach (int i in filter)
             {
@@ -56,7 +56,7 @@ namespace InputModule
         {
             var inputEntity = inputWorld.NewEntity();
             
-            inputWorld.GetPool<InputComponent>().Add(inputEntity);
+            inputWorld.GetPool<InputEntityTag>().Add(inputEntity);
             inputWorld.GetPool<InputEntityIdComponent>().Add(inputEntity).entity = playerId;
             
             var pool = inputWorld.GetPoolByType(inputRequest.GetType());

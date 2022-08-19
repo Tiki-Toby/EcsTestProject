@@ -41,29 +41,29 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Plugins\EcsLite\XFlow\EcsLite\systems.cs" />
      <Compile Include="Assets\Plugins\EcsLite\XFlow\EcsLite\AnyComponentListeners.cs" />
      <Compile Include="Assets\Plugins\EcsLite\XFlow\EcsLite\ExtendedSystems.cs" />
-     <Compile Include="Assets\Plugins\EcsLite\XFlow\UniLeo\Runtime\MonoHelpers\BaseMonoProvider.cs" />
      <Compile Include="Assets\Plugins\EcsLite\XFlow\EcsLite\filters.cs" />
-     <Compile Include="Assets\Plugins\EcsLite\XFlow\Utils\EcsListenersExt.cs" />
-     <Compile Include="Assets\Plugins\EcsLite\XFlow\EcsLite\AnyListener.cs" />
      <Compile Include="Assets\Plugins\EcsLite\XFlow\EcsLite\EventsSystem.cs" />
      <Compile Include="Assets\Plugins\EcsLite\XFlow\EcsLite\worlds.cs" />
      <Compile Include="Assets\Plugins\EcsLite\XFlow\UniLeo\Runtime\MonoHelpers\MonoProvider.cs" />
-     <Compile Include="Assets\Plugins\EcsLite\XFlow\Utils\EcsDebug.cs" />
-     <Compile Include="Assets\Plugins\EcsLite\XFlow\UniLeo\Runtime\MonoHelpers\IConvertToEntity.cs" />
-     <Compile Include="Assets\Plugins\EcsLite\XFlow\UniLeo\Runtime\World\Systems\WorldInitSystem.cs" />
      <Compile Include="Assets\Plugins\EcsLite\XFlow\UniLeo\Runtime\MonoHelpers\WorldHandler.cs" />
      <Compile Include="Assets\Plugins\EcsLite\XFlow\Utils\Utils.cs" />
      <Compile Include="Assets\Plugins\EcsLite\XFlow\EcsLite\IAnyComponentListeners.cs" />
-     <Compile Include="Assets\Plugins\EcsLite\XFlow\UniLeo\Runtime\MonoHelpers\ConversionSystemExtension.cs" />
      <Compile Include="Assets\Plugins\EcsLite\XFlow\EcsLite\components.cs" />
-     <Compile Include="Assets\Plugins\EcsLite\XFlow\UniLeo\Runtime\World\Components\InstantiateComponent.cs" />
      <Compile Include="Assets\Plugins\EcsLite\XFlow\Utils\EntityExt.cs" />
+     <Compile Include="Assets\Plugins\EcsLite\XFlow\EcsLite\entities.cs" />
+     <Compile Include="Assets\Plugins\EcsLite\XFlow\EcsLite\systems.cs" />
+     <Compile Include="Assets\Plugins\EcsLite\XFlow\UniLeo\Runtime\MonoHelpers\BaseMonoProvider.cs" />
+     <Compile Include="Assets\Plugins\EcsLite\XFlow\Utils\EcsListenersExt.cs" />
+     <Compile Include="Assets\Plugins\EcsLite\XFlow\EcsLite\AnyListener.cs" />
+     <Compile Include="Assets\Plugins\EcsLite\XFlow\Utils\EcsDebug.cs" />
+     <Compile Include="Assets\Plugins\EcsLite\XFlow\UniLeo\Runtime\MonoHelpers\IConvertToEntity.cs" />
+     <Compile Include="Assets\Plugins\EcsLite\XFlow\UniLeo\Runtime\World\Systems\WorldInitSystem.cs" />
+     <Compile Include="Assets\Plugins\EcsLite\XFlow\UniLeo\Runtime\MonoHelpers\ConversionSystemExtension.cs" />
+     <Compile Include="Assets\Plugins\EcsLite\XFlow\UniLeo\Runtime\World\Components\InstantiateComponent.cs" />
      <Compile Include="Assets\Plugins\EcsLite\XFlow\Utils\EcsWorldExt.cs" />
      <Compile Include="Assets\Plugins\EcsLite\XFlow\UniLeo\Runtime\MonoHelpers\ConvertToEntity.cs" />
-     <Compile Include="Assets\Plugins\EcsLite\XFlow\EcsLite\entities.cs" />
      <None Include="Assets\Plugins\EcsLite\XFlow\xflow.ecs.asmdef" />
      <Reference Include="UnityEngine">
      <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.8f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>

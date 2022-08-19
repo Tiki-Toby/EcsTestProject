@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 864958a6b16b4975b9d57ff8f36e716f, type: 3}
+  m_Name: GameConfigsPool
+  m_EditorClassIdentifier: 
+  playerDataConfig: {fileID: 11400000, guid: 48c6d2cb9332c744daab4dc8873167fd, type: 2}
+  cameraDataConfig: {fileID: 11400000, guid: 6a60dad38efbc2e4f9e85dde16f2a4cf, type: 2}
+  sceneDataConfigs:
+  - {fileID: 11400000, guid: 3cd27a0af7d2cb9469de16ccf9927580, type: 2}
+  debugConfig: {fileID: 11400000, guid: db2d85d248149f145b357e5857ad7f27, type: 2}

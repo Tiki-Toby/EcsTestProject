@@ -17,11 +17,11 @@ namespace InputModule
         
         public void Run(IEcsSystems systems)
         {
-            inputEntityFilter = inputWorld.Filter<InputComponent>().End();
+            inputEntityFilter = inputWorld.Filter<InputEntityTag>().End();
             var inputEntityIdPool = inputWorld.GetPool<InputEntityIdComponent>();
             
             var newTargetRequestPool = inputWorld.GetPool<InputTargetRequest>();
-            var moveDirectionRequestPool = inputWorld.GetPool<InputDirectionRequest>();
+            var moveDirectionRequestPool = inputWorld.GetPool<InputDirectionComponent>();
             
             foreach (int i in inputEntityFilter)
             {

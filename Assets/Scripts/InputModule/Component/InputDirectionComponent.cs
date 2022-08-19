@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace InputModule
 {
-    public struct InputDirectionRequest : IInputComponent
+    public struct InputDirectionComponent : IInputComponent
     {
         public Vector3 MoveDirection;
     }

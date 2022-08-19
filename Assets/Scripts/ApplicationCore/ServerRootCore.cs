@@ -1,5 +1,6 @@
 using GameEntities;
 using Leopotam.EcsLite;
+using XFlow.Modules.Box2D.ClientServer.Systems;
 
 namespace ApplicationCore
 {
@@ -32,7 +33,7 @@ namespace ApplicationCore
             systems.Add(new TriggerEnterExitDetectionSystem());
             systems.Add(new DoorButtonPressingSystem());
             systems.Add(new MovementSystem());
-            systems.Add(new GameProcessDebugSystem(true, false));
+            systems.Add(new GameProcessDebugSystem(false, true));
         }
 
         public void RunLogic()

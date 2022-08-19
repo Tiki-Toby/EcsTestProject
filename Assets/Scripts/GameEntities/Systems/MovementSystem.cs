@@ -30,6 +30,7 @@ namespace GameEntities
                 if (rotationPool.Has(entity))
                 {
                     Vector3 axis = new Vector3(dir.z, 0, -dir.x);
+                    //Quaternion.FromToRotation(positionComponent.currentEntityPosition, dir)
                     Quaternion rotation = Quaternion.AngleAxis(1, axis);
                     
                     ref var rotationComponent = ref rotationPool.Get(entity);
