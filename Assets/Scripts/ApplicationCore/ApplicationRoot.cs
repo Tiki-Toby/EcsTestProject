@@ -12,8 +12,9 @@ namespace ApplicationCore
     {
         [Inject] private WorldView worldView;
         [Inject] private GameConfigsReceiver gameConfigs;
+        [Inject] private SceneManagerService sceneManagerService;
+        [Inject] private EcsWorld world;
         
-        private EcsWorld world;
         private EcsSystems systems;
 
         private ClientRootCore clientRootCore;
@@ -21,7 +22,6 @@ namespace ApplicationCore
 
         private void Start()
         {
-            world = new EcsWorld();
             systems = new EcsSystems(world);
             
             world.AddUnique(new TickDeltaComponent
@@ -33,7 +33,8 @@ namespace ApplicationCore
 
 
             serverRootCore = new ServerRootCore(world, systems);
-            clientRootCore = new ClientRootCore(world, systems, worldView, gameConfigs);
+            clientRootCore = new ClientRootCore(world, systems, sceneManagerService);
+            clientRootCore.CreateLevel(0);
             
             serverRootCore.Init();
             clientRootCore.Init();

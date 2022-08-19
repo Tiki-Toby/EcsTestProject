@@ -1,5 +1,3 @@
-using GameConfigs;
-using ECS.Server;
 using ECS.Client;
 using XFlow.EcsLite;
 
@@ -14,7 +12,7 @@ namespace ApplicationCore
         private SceneManagerService sceneManagerService;
         
         public ClientRootCore(EcsWorld world, EcsSystems systems, 
-            WorldView worldView, GameConfigsReceiver gameConfigs)
+            SceneManagerService sceneManagerService)
         {
             this.systems = systems;
 
@@ -22,10 +20,8 @@ namespace ApplicationCore
             systems.AddWorld(inputWorld, "Input");
 
             viewSystems = new EcsSystems(world);
-
-            sceneManagerService = new SceneManagerService(world, worldView, gameConfigs);
-            sceneManagerService.CreateEntitiesForLevel(0);
-
+            this.sceneManagerService = sceneManagerService;
+            
             AddInputSystems();
             AddViewSystems();
         }
@@ -41,6 +37,11 @@ namespace ApplicationCore
         {
             viewSystems.Add(new SyncTransformDataSystem());
             viewSystems.Add(new CameraFollowSystem());
+        }
+
+        public void CreateLevel(int index)
+        {
+            sceneManagerService.CreateEntitiesForLevel(index);
         }
 
         public void Init()

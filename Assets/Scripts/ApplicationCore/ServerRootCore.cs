@@ -25,11 +25,6 @@ namespace ApplicationCore
         
         private void AddSystems()
         {
-            AddControlSystems();
-        }
-
-        private void AddControlSystems()
-        {
             systems.Add(new TickSystem());
             
             systems.Add(new MoveToTargetSystem());
@@ -40,6 +35,8 @@ namespace ApplicationCore
             systems.Add(new RotateSpheresSystem());
             
             systems.Add(new Box2DInitSystem());
+            systems.Add(new CreatePhysicsBodySystem());
+            
             systems.Add(new Box2DCreateBodiesSystem());
             systems.Add(new Box2DCreateContactsSystem());
             systems.Add(new Box2DUpdateInternalObjectsSystem());
@@ -47,7 +44,7 @@ namespace ApplicationCore
             systems.Add(new Box2DDeleteContactsSystem());
             systems.Add(new Box2DWriteBodiesToComponentsSystem());
             
-            systems.Add(new GameProcessDebugSystem(false, true));
+            systems.Add(new GameProcessDebugSystem(false, false));
         }
 
         public void RunLogic()

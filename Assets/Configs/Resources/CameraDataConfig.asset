@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ce17222cf9248f2b64b62f83a58012e, type: 3}
   m_Name: CameraDataConfig
   m_EditorClassIdentifier: 
-  fromPlayerOffset: {x: 2, y: 10, z: -5}
-  cameraVelocity: 3
+  fromPlayerOffset: {x: 7, y: 15, z: -12}
+  cameraVelocity: 4

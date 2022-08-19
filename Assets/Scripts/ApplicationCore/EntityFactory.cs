@@ -2,6 +2,7 @@ using ECS.Client;
 using UnityEngine;
 using XFlow.Ecs.ClientServer.Components;
 using XFlow.EcsLite;
+using Zenject;
 
 namespace ECS.Server
 {
@@ -9,7 +10,7 @@ namespace ECS.Server
     {
         private readonly EcsWorld world;
 
-        public EntityFactory(EcsWorld world)
+        public EntityFactory([Inject] EcsWorld world)
         {
             this.world = world;
         }
