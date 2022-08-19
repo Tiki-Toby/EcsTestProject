@@ -1,6 +1,6 @@
 namespace ECS.Server
 {
-    public struct TriggerExitTag
+    public struct PlayerTag
     {
         
     }

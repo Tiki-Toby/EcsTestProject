@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GameEntities
+namespace ECS.Client
 {
     public struct CameraComponent
     {

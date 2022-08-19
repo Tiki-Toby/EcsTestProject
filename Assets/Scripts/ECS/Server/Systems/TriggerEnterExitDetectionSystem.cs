@@ -1,14 +1,15 @@
 using UnityEngine;
+using XFlow.Ecs.ClientServer.Components;
 using XFlow.EcsLite;
 
-namespace GameEntities
+namespace ECS.Server
 {
     public class TriggerEnterExitDetectionSystem : IEcsRunSystem
     {
         public void Run(EcsSystems systems)
         {
             EcsWorld world = systems.GetWorld();
-            EcsFilter filter = world
+            EcsFilter buttonFilter = world
                 .Filter<DoorButtonComponent>()
                 .Inc<PositionComponent>()
                 .Inc<InteractableRadiusComponent>()
@@ -20,21 +21,28 @@ namespace GameEntities
             var triggeredEnterPool = world.GetPool<TriggerEnterTag>();
             var triggeredExitPool = world.GetPool<TriggerExitTag>();
 
-            Vector3 playerPosition = 
-                positionPool.GetRef(world.GetUnique<MainPlayerTag>().playerId).currentEntityPosition;
+            EcsFilter playerFilter = world
+                .Filter<PlayerTag>()
+                .Inc<PositionComponent>()
+                .End();
             
-            foreach (int buttonEntity in filter)
+            foreach (int playerEntity in playerFilter)
             {
-                Vector3 buttonPosition = positionPool.GetRef(buttonEntity).currentEntityPosition;
-                float buttonRadius = interactableRadiusPool.GetRef(buttonEntity).interactableRadius;
-
-                if ((playerPosition - buttonPosition).sqrMagnitude <= buttonRadius)
+                Vector3 playerPosition = positionPool.GetRef(playerEntity).value;
+                
+                foreach (int buttonEntity in buttonFilter)
                 {
-                    if(!triggeredEnterPool.Has(buttonEntity))
-                        triggeredEnterPool.Add(buttonEntity);
+                    Vector3 buttonPosition = positionPool.GetRef(buttonEntity).value;
+                    float buttonRadius = interactableRadiusPool.GetRef(buttonEntity).interactableRadius;
+
+                    if ((playerPosition - buttonPosition).sqrMagnitude <= buttonRadius)
+                    {
+                        if(!triggeredEnterPool.Has(buttonEntity))
+                            triggeredEnterPool.Add(buttonEntity);
+                    }
+                    else if(triggeredEnterPool.Has(buttonEntity) && !triggeredExitPool.Has(buttonEntity))
+                        triggeredExitPool.Add(buttonEntity);
                 }
-                else if(triggeredEnterPool.Has(buttonEntity) && !triggeredExitPool.Has(buttonEntity))
-                    triggeredExitPool.Add(buttonEntity);
             }
         }
     }

@@ -1,5 +1,5 @@
 using GameConfigs;
-using GameEntities;
+using ECS.Server;
 using UnityEngine;
 using XFlow.EcsLite;
 using XFlow.Modules.Tick.ClientServer.Components;
@@ -41,14 +41,14 @@ namespace ApplicationCore
 
         private void Update()
         {
-            serverRootCore.RunLogic();
+            serverRootCore.RunLogic(); 
             clientRootCore.RunView();
         }
 
         private void OnDestroy()
         {
-            serverRootCore.Destroy();
             clientRootCore.Destroy();
+            serverRootCore.Destroy();
         }
     }
 }

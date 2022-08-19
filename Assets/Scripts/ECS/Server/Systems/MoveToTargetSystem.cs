@@ -1,7 +1,8 @@
 using UnityEngine;
+using XFlow.Ecs.ClientServer.Components;
 using XFlow.EcsLite;
 
-namespace GameEntities
+namespace ECS.Server
 {
     public class MoveToTargetSystem : IEcsRunSystem
     {
@@ -19,7 +20,7 @@ namespace GameEntities
 
             foreach (int i in filter)
             {
-                Vector3 deltaPosition = targetPool.Get(i).target - positionPool.Get(i).currentEntityPosition;
+                Vector3 deltaPosition = targetPool.Get(i).target - positionPool.Get(i).value;
                 deltaPosition.y = 0;
 
                 if (deltaPosition.sqrMagnitude <= 0.1f)

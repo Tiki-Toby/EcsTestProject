@@ -1,4 +1,4 @@
-namespace GameEntities
+namespace ECS.Server
 {
     public struct EntityDataComponent
     {

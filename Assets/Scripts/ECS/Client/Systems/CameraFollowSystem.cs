@@ -1,7 +1,7 @@
 using UnityEngine;
 using XFlow.EcsLite;
 
-namespace GameEntities
+namespace ECS.Client
 {
     public class CameraFollowSystem : IEcsRunSystem
     {
@@ -9,23 +9,22 @@ namespace GameEntities
         {
             var world = systems.GetWorld();
 
-            var transformPool = world.GetPool<TransformComponent>();
+            var transformPool = world.GetPool<XFlow.Ecs.Client.Components.TransformComponent>();
             var deltaTime = Time.deltaTime;
 
             int playerId = world.GetUnique<MainPlayerTag>().playerId;
-            Transform transform = transformPool.Get(playerId).objectTransform;
+            Transform playerTransform = transformPool.Get(playerId).Transform;
 
-            var cameraPool = world.GetPool<CameraComponent>();
             var cameraDataPool = world.GetPool<ActionCameraComponent>();
 
             var cameraEntity = world.GetUnique<MainCameraComponent>().cameraEntity;
+            Transform cameraTransform = transformPool.Get(cameraEntity).Transform;
             
             ref var cameraData = ref cameraDataPool.GetRef(cameraEntity);
-            var targetPosition = transform.position + cameraData.FromPlayerOffset;
+            var targetPosition = playerTransform.position + cameraData.FromPlayerOffset;
 
-            Camera camera = cameraPool.Get(cameraEntity).Camera;
-            camera.transform.position = Vector3.Lerp(
-                camera.transform.position,
+            cameraTransform.position = Vector3.Lerp(
+                cameraTransform.position,
                 targetPosition,
                 cameraData.CameraVelocity * deltaTime);
         }

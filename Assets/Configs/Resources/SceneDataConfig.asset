@@ -29,3 +29,11 @@ MonoBehaviour:
     buttonId: 3
     offsetFromStartPosition: {x: 0, y: 5, z: 0}
     velocity: 1
+  - doorId: 3
+    buttonId: 3
+    offsetFromStartPosition: {x: 0, y: 5, z: 0}
+    velocity: 1
+  - doorId: 4
+    buttonId: 4
+    offsetFromStartPosition: {x: 0, y: 0, z: 5}
+    velocity: 1

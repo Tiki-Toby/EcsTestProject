@@ -1,8 +1,7 @@
-using GameEntities;
 using UnityEngine;
 using XFlow.EcsLite;
 
-namespace InputModule
+namespace ECS.Client
 {
     public class MouseInputController : ABaseInputController
     {

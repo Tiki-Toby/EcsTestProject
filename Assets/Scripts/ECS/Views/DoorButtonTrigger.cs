@@ -1,7 +1,7 @@
 using Leopotam.EcsLite;
 using UnityEngine;
 
-namespace GameEntities
+namespace ECS.Server
 {
     public class DoorButtonTrigger : MonoBehaviour
     {

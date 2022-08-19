@@ -1,7 +1,9 @@
 using UnityEngine;
+using XFlow.Ecs.ClientServer.Components;
 using XFlow.EcsLite;
+using XFlow.Modules.Box2D.ClientServer.Components;
 
-namespace GameEntities
+namespace ECS.Server
 {
     internal class MovementSystem : IEcsRunSystem
     {
@@ -11,12 +13,14 @@ namespace GameEntities
             EcsFilter filter = world
                 .Filter<MovingEntityComponent>()
                 .Inc<PositionComponent>()
+                .Exc<Box2DRigidbodyDefinitionComponent>()
                 .End();
             
             var positionPool = world.GetPool<PositionComponent>();
             var moveDirectionPool = world.GetPool<MovingEntityComponent>();
             var velocityPool = world.GetPool<VelocityComponent>();
             var rotationPool = world.GetPool<RotationComponent>();
+            var radiusPool = world.GetPool<RadiusComponent>();
 
             foreach (var entity in filter)
             {
@@ -25,15 +29,15 @@ namespace GameEntities
                 Vector3 dir = moveDirection * Time.deltaTime * speed;
                 
                 ref var positionComponent = ref positionPool.GetRef(entity);
-                positionComponent.currentEntityPosition += dir;
+                positionComponent.value += dir;
 
                 if (rotationPool.Has(entity))
                 {
                     ref var rotationComponent = ref rotationPool.GetRef(entity);
+                    float radius = radiusPool.GetRef(entity).radius;
                     
-                    //Vector3 axis = Vector3.Cross(moveDirection.normalized, Vector3.up);
                     Vector3 axis = new Vector3(dir.z, 0, -dir.x);
-                    float angel = 1;//dir.magnitude * Mathf.PI;
+                    float angel = Mathf.Atan(dir.magnitude / radius) * Mathf.Rad2Deg;
                     Quaternion rotation = Quaternion.AngleAxis(angel, axis);
                     
                     rotationComponent.rotation = rotation * rotationComponent.rotation;

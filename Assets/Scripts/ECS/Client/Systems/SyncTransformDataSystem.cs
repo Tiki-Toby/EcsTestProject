@@ -1,7 +1,9 @@
+using ECS.Server;
 using UnityEngine;
+using XFlow.Ecs.ClientServer.Components;
 using XFlow.EcsLite;
 
-namespace GameEntities
+namespace ECS.Client
 {
     public class SyncTransformDataSystem : IEcsRunSystem
     {
@@ -9,19 +11,19 @@ namespace GameEntities
         {
             EcsWorld world = systems.GetWorld();
             EcsFilter filter = world
-                .Filter<TransformComponent>()
+                .Filter<XFlow.Ecs.Client.Components.TransformComponent>()
                 .Inc<PositionComponent>()
                 .End();
 
-            var transformPool = world.GetPool<TransformComponent>();
+            var transformPool = world.GetPool<XFlow.Ecs.Client.Components.TransformComponent>();
             var positionPool = world.GetPool<PositionComponent>();
             var rotationPool = world.GetPool<RotationComponent>();
 
             foreach (var entity in filter)
             {
-                Transform transform = transformPool.Get(entity).objectTransform;
+                Transform transform = transformPool.Get(entity).Transform;
 
-                transform.position = positionPool.Get(entity).currentEntityPosition;
+                transform.position = positionPool.Get(entity).value;
                 
                 if (rotationPool.Has(entity))
                 {

@@ -1,6 +1,7 @@
+using ECS.Client;
 using UnityEngine;
 
-namespace InputModule
+namespace ECS.Client
 {
     public struct InputTargetRequest : IInputComponent
     {

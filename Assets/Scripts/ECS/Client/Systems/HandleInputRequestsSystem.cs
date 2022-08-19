@@ -1,8 +1,8 @@
-using GameEntities;
+using ECS.Server;
 using UnityEngine;
 using XFlow.EcsLite;
 
-namespace InputModule
+namespace ECS.Client
 {
     public class HandleInputRequestsSystem : IEcsInitSystem, IEcsRunSystem
     {

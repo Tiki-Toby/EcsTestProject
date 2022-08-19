@@ -1054,8 +1054,8 @@
      <Compile Include="Assets\Plugins\Ecs-central\Best HTTP (Pro)\BestHTTP\SecureProtocol\crypto\digests\GOST3411_2012_256Digest.cs" />
      <Compile Include="Assets\Plugins\Ecs-central\Best HTTP (Pro)\BestHTTP\SecureProtocol\asn1\x509\GeneralSubtree.cs" />
      <Compile Include="Assets\Plugins\Ecs-central\Best HTTP (Pro)\BestHTTP\SecureProtocol\asn1\cms\OtherKeyAttribute.cs" />
-     <Compile Include="Assets\Plugins\Ecs-central\Best HTTP (Pro)\BestHTTP\SecureProtocol\cms\IDigestCalculator.cs" />
      <Compile Include="Assets\Plugins\Ecs-central\Best HTTP (Pro)\BestHTTP\SecureProtocol\asn1\crmf\EncryptedKey.cs" />
+     <Compile Include="Assets\Plugins\Ecs-central\Best HTTP (Pro)\BestHTTP\SecureProtocol\cms\IDigestCalculator.cs" />
      <Compile Include="Assets\Plugins\Ecs-central\Best HTTP (Pro)\BestHTTP\SecureProtocol\cms\CMSEnvelopedDataParser.cs" />
      <Compile Include="Assets\Plugins\Ecs-central\Best HTTP (Pro)\BestHTTP\ServerSentEvents\EventSource.cs" />
      <Compile Include="Assets\Plugins\Ecs-central\Best HTTP (Pro)\BestHTTP\SecureProtocol\asn1\cmp\CertRepMessage.cs" />

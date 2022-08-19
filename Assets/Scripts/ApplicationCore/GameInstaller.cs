@@ -1,5 +1,5 @@
 using GameConfigs;
-using GameEntities;
+using ECS.Server;
 using UnityEngine;
 using Zenject;
 

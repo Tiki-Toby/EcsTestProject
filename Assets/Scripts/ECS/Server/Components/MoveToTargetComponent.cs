@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GameEntities
+namespace ECS.Server
 {
     public struct MoveToTargetComponent
     {

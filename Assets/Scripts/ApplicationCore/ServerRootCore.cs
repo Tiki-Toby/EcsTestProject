@@ -1,9 +1,7 @@
-using GameEntities;
+using ECS.Server;
 using XFlow.EcsLite;
 using XFlow.Modules.Box2D.ClientServer.Systems;
-using XFlow.Modules.Tick.ClientServer.Components;
 using XFlow.Modules.Tick.ClientServer.Systems;
-using XFlow.Modules.Tick.Other;
 
 namespace ApplicationCore
 {
@@ -32,10 +30,14 @@ namespace ApplicationCore
 
         private void AddControlSystems()
         {
+            systems.Add(new TickSystem());
+            
             systems.Add(new MoveToTargetSystem());
             systems.Add(new TriggerEnterExitDetectionSystem());
             systems.Add(new DoorButtonPressingSystem());
             systems.Add(new MovementSystem());
+            systems.Add(new PhysicsMovementSystem());
+            systems.Add(new RotateSpheresSystem());
             
             systems.Add(new Box2DInitSystem());
             systems.Add(new Box2DCreateBodiesSystem());
@@ -43,9 +45,9 @@ namespace ApplicationCore
             systems.Add(new Box2DUpdateInternalObjectsSystem());
             systems.Add(new Box2DUpdateSystem());
             systems.Add(new Box2DDeleteContactsSystem());
+            systems.Add(new Box2DWriteBodiesToComponentsSystem());
             
             systems.Add(new GameProcessDebugSystem(false, true));
-            systems.Add(new TickSystem());
         }
 
         public void RunLogic()

@@ -1,10 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
+using ECS.Client;
+using ECS.Server;
 using GameConfigs;
-using GameEntities;
 using UnityEngine;
+using XFlow.Ecs.Client.Components;
+using XFlow.Ecs.ClientServer.Components;
 using XFlow.EcsLite;
-using DoorButtonPair = GameConfigs.DoorButtonPair;
+using XFlow.Modules.Box2D.ClientServer.Api;
+using XFlow.Modules.Box2D.ClientServer.Components;
+using XFlow.Modules.Box2D.ClientServer.Components.Colliders;
 
 namespace ApplicationCore
 {
@@ -46,14 +51,15 @@ namespace ApplicationCore
                 CreateDoorEntity(doorButtonView, doorView, doorButtonPair.Velocity, doorButtonPair.OffsetFromStartPosition);
             }
 
-            Collider[] colliders = GameObject.FindObjectsOfType<Collider>();
+            CircleCollider2D[] colliders = GameObject.FindObjectsOfType<CircleCollider2D>();
+            CreateColliders(colliders);
         }
 
         private void CreateCameraEntity(Camera camera, 
             float velocity, Vector3 offsetFromPlayer)
         {
             int cameraEntity = entityFactory.CreateEmpty("Camera");
-            world.GetPool<TransformComponent>().Add(cameraEntity).objectTransform = camera.transform;
+            world.GetPool<TransformComponent>().Add(cameraEntity).Transform = camera.transform;
             
             world.AddUnique<MainCameraComponent>().cameraEntity = cameraEntity;
             
@@ -73,8 +79,8 @@ namespace ApplicationCore
             
             int playerId = entityFactory.CreatePlayerEntity("Player", velocity);
 
-            world.GetPool<TransformComponent>().Add(playerId).objectTransform = playerTransform;
-            world.GetPool<PositionComponent>().GetRef(playerId).currentEntityPosition = playerTransform.position;
+            world.GetPool<TransformComponent>().Add(playerId).Transform = playerTransform;
+            world.GetPool<PositionComponent>().GetRef(playerId).value = playerTransform.position;
             world.GetPool<RotationComponent>().GetRef(playerId).rotation = playerTransform.rotation;
             
             createdEntities.Add(playerTransform.gameObject, playerId);
@@ -87,8 +93,8 @@ namespace ApplicationCore
             if (!createdEntities.TryGetValue(doorTransform.gameObject, out int doorEntity))
             {
                 doorEntity = entityFactory.CreateMovableGameObject(doorTransform.name, velocity);
-                world.GetPool<TransformComponent>().Add(doorEntity).objectTransform = doorTransform;
-                world.GetPool<PositionComponent>().GetRef(doorEntity).currentEntityPosition = doorTransform.position;
+                world.GetPool<TransformComponent>().Add(doorEntity).Transform = doorTransform;
+                world.GetPool<PositionComponent>().GetRef(doorEntity).value = doorTransform.position;
 
                 ref var doorComponent = ref world.GetPool<DoorComponent>().Add(doorEntity);
                 doorComponent.doorId = doorId;
@@ -106,8 +112,8 @@ namespace ApplicationCore
             {
                 doorEntity = entityFactory.CreateMovableGameObject(doorView.gameObject.name, velocity);
                 Transform doorTransform = doorView.DoorTransform;
-                world.GetPool<TransformComponent>().Add(doorEntity).objectTransform = doorTransform;
-                world.GetPool<PositionComponent>().GetRef(doorEntity).currentEntityPosition = doorTransform.position;
+                world.GetPool<TransformComponent>().Add(doorEntity).Transform = doorTransform;
+                world.GetPool<PositionComponent>().GetRef(doorEntity).value = doorTransform.position;
                 world.GetPool<VelocityComponent>().GetRef(doorEntity).velocity = velocity;
 
                 ref var doorComponent = ref world.GetPool<DoorComponent>().Add(doorEntity);
@@ -120,19 +126,60 @@ namespace ApplicationCore
 
             if (!createdEntities.TryGetValue(doorButtonView.gameObject, out int buttonEntity))
             {
-                buttonEntity = entityFactory.CreateGameObject(doorButtonView.SphereCollider.name);
-                world.GetPool<TransformComponent>().Add(buttonEntity).objectTransform =
-                    doorButtonView.SphereCollider.transform;
-                world.GetPool<PositionComponent>().GetRef(buttonEntity).currentEntityPosition =
-                    doorButtonView.SphereCollider.transform.position;
+                buttonEntity = entityFactory.CreateGameObject(doorButtonView.CircleCollider2D.name);
+                world.GetPool<TransformComponent>().Add(buttonEntity).Transform =
+                    doorButtonView.CircleCollider2D.transform;
+                world.GetPool<PositionComponent>().GetRef(buttonEntity).value =
+                    doorButtonView.CircleCollider2D.transform.position;
                 world.GetPool<InteractableRadiusComponent>().Add(buttonEntity).interactableRadius =
-                    doorButtonView.SphereCollider.radius;
+                    doorButtonView.CircleCollider2D.radius;
 
                 ref var buttonComponent = ref world.GetPool<DoorButtonComponent>().Add(buttonEntity);
                 buttonComponent.buttonId = doorButtonView.ButtonId;
                 buttonComponent.doorEntity = doorEntity;
                 
                 createdEntities.Add(doorButtonView.gameObject, doorEntity);
+            }
+        }
+
+        private void AddCircleComponent(CircleCollider2D[] circleCollider2D)
+        {
+            foreach (CircleCollider2D collider in circleCollider2D)
+            {
+                if (!createdEntities.TryGetValue(collider.gameObject, out int entity))
+                    entity = world.NewEntity();
+
+                world.GetPool<RadiusComponent>().Add(entity).radius = collider.radius;
+            }
+        }
+
+        private void CreateColliders(Collider2D[] collider2Ds)
+        {
+            foreach (Collider2D collider2D in collider2Ds)
+            {
+                if(collider2D.isTrigger)
+                    continue;
+                
+                if (!createdEntities.TryGetValue(collider2D.gameObject, out int entity))
+                    entity = world.NewEntity();
+                
+                ref var rigidbodyDefinitionComponent = ref world.GetPool<Box2DRigidbodyDefinitionComponent>().Add(entity);
+                rigidbodyDefinitionComponent.BodyType = BodyType.Dynamic;
+                rigidbodyDefinitionComponent.Bullet = true;
+                rigidbodyDefinitionComponent.Density = 1;
+                rigidbodyDefinitionComponent.LinearDamping = 1f;
+
+                if (collider2D is CircleCollider2D)
+                {
+                    ref var collider = ref world.GetPool<Box2DCircleColliderComponent>().Add(entity);
+                    float radius = ((CircleCollider2D)collider2D).radius;
+                    collider.Radius = radius;
+                }
+                else if (collider2D is BoxCollider2D)
+                {
+                    ref var collider = ref world.GetPool<Box2DBoxColliderComponent>().Add(entity);
+                    collider.Size = ((BoxCollider2D)collider2D).size;
+                }
             }
         }
     }

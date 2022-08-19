@@ -1,4 +1,6 @@
-namespace InputModule
+using ECS.Client;
+
+namespace ECS.Client
 {
     public struct InputEntityIdComponent : IInputComponent
     {

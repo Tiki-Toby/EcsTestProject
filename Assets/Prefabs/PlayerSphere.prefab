@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 7815567332942951366}
   - component: {fileID: 7815567332942951367}
   - component: {fileID: 7815567332942951360}
+  - component: {fileID: 6952082793341221467}
   m_Layer: 0
   m_Name: PlayerSphere
   m_TagString: Player
@@ -200,6 +201,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 7815567332942951361}
+--- !u!58 &6952082793341221467
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7815567332942951365}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &7815567333265660892
 GameObject:
   m_ObjectHideFlags: 0

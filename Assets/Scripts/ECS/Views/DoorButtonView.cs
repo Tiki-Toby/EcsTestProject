@@ -1,13 +1,13 @@
 using UnityEngine;
 
-namespace GameEntities
+namespace ECS.Server
 {
     public class DoorButtonView : MonoBehaviour
     {
         [SerializeField] private int buttonId;
-        [SerializeField] private SphereCollider sphereCollider;
+        [SerializeField] private CircleCollider2D circleCollider2D;
 
         public int ButtonId => buttonId;
-        public SphereCollider SphereCollider => sphereCollider;
+        public CircleCollider2D CircleCollider2D => circleCollider2D;
     }
 }

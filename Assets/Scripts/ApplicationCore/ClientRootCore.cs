@@ -1,6 +1,6 @@
 using GameConfigs;
-using GameEntities;
-using InputModule;
+using ECS.Server;
+using ECS.Client;
 using XFlow.EcsLite;
 
 namespace ApplicationCore
@@ -34,6 +34,7 @@ namespace ApplicationCore
         {
             systems.Add(new MouseInputController());
             systems.Add(new HandleInputRequestsSystem());
+            systems.Add(new ClearInputSystem());
         }
 
         private void AddViewSystems()

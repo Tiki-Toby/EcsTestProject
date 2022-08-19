@@ -1,7 +1,9 @@
+using ECS.Client;
 using UnityEngine;
+using XFlow.Ecs.ClientServer.Components;
 using XFlow.EcsLite;
 
-namespace GameEntities
+namespace ECS.Server
 {
     public class EntityFactory
     {
@@ -25,7 +27,7 @@ namespace GameEntities
         {
             int newEntity = CreateEmpty(name);
             
-            world.GetPool<PositionComponent>().Add(newEntity).currentEntityPosition = Vector3.zero;
+            world.GetPool<PositionComponent>().Add(newEntity).value = Vector3.zero;
 
             return newEntity;
         }
@@ -44,6 +46,7 @@ namespace GameEntities
             int newEntity = CreateMovableGameObject(name, velocity);
             
             world.GetPool<RotationComponent>().Add(newEntity).rotation = Quaternion.identity;
+            world.GetPool<Rotation2DComponent>().Add(newEntity).Angle = 0;
 
             return newEntity;
         }
@@ -52,6 +55,7 @@ namespace GameEntities
         {
             int newEntity = CreateGameBallEntity(name, velocity);
             world.AddUnique<MainPlayerTag>().playerId = newEntity;
+            world.GetPool<PlayerTag>().Add(newEntity);
 
             return newEntity;
         }

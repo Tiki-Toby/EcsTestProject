@@ -1,8 +1,7 @@
-using GameEntities;
 using UnityEngine;
 using XFlow.EcsLite;
 
-namespace InputModule
+namespace ECS.Client
 {
     public abstract class ABaseInputController : IEcsInitSystem, IEcsRunSystem
     {
@@ -21,7 +20,6 @@ namespace InputModule
 
         public void Run(EcsSystems systems)
         {
-            ClearOldInputEntities();
             int playerId = world.GetUnique<MainPlayerTag>().playerId;
 
             if (IsTouchedSomeTargetPoint())
@@ -38,16 +36,6 @@ namespace InputModule
                 var newDirectionInputRequest = new InputDirectionComponent();
                 newDirectionInputRequest.MoveDirection = inputMoveDirection;
                 CreateInputEntity(playerId, newDirectionInputRequest);
-            }
-        }
-
-        private void ClearOldInputEntities()
-        {
-            EcsFilter filter = world.Filter<InputEntityTag>().End();
-
-            foreach (int i in filter)
-            {
-                inputWorld.DelEntity(i);
             }
         }
         

@@ -1,11 +1,11 @@
-using Leopotam.EcsLite;
 using UnityEngine;
+using XFlow.Ecs.ClientServer.Components;
 using EcsFilter = XFlow.EcsLite.EcsFilter;
 using EcsSystems = XFlow.EcsLite.EcsSystems;
 using EcsWorld = XFlow.EcsLite.EcsWorld;
 using IEcsRunSystem = XFlow.EcsLite.IEcsRunSystem;
 
-namespace GameEntities
+namespace ECS.Server
 {
     public class GameProcessDebugSystem : IEcsRunSystem
     {
@@ -52,7 +52,7 @@ namespace GameEntities
                     Debug.Log("Rotation: " + rotationPool.Get(entity).rotation.ToString());
                 
                 Debug.Log("Direction: " + moveDirection);
-                Debug.Log("Position: " + positionComponent.currentEntityPosition.ToString());
+                Debug.Log("Position: " + positionComponent.value.ToString());
             }
         }
 

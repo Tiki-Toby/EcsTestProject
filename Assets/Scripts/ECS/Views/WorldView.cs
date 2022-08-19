@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace GameEntities
+namespace ECS.Server
 {
     public class WorldView : MonoBehaviour
     {

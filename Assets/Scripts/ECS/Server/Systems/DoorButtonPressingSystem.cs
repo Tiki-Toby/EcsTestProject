@@ -1,7 +1,8 @@
 using UnityEngine;
+using XFlow.Ecs.ClientServer.Components;
 using XFlow.EcsLite;
 
-namespace GameEntities
+namespace ECS.Server
 {
     public class DoorButtonPressingSystem : IEcsRunSystem
     {
@@ -39,7 +40,7 @@ namespace GameEntities
                     continue;
                 }
                 
-                Vector3 position = positionPool.Get(doorEntity).currentEntityPosition;
+                Vector3 position = positionPool.Get(doorEntity).value;
                 if ((position - doorComponent.finalPosition).sqrMagnitude > 0.1f)
                 {
                     if (!movingPool.Has(doorEntity))

@@ -1,4 +1,4 @@
-namespace GameEntities
+namespace ECS.Client
 {
     public struct MainCameraComponent
     {
